@@ -26,12 +26,12 @@ for book in books[:15]:  # Get first 15 books
     # Price (remove the £ symbol)
     price = book.find('p', class_='price_color').text.strip('£')
     
-    # Rating (convert to numbers)
+    # Rating (stars converted to numbers)
     rating_class = book.find('p', class_='star-rating')['class'][1]
     rating_map = {'One': 1, 'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5}
     rating = rating_map.get(rating_class, 0)
     
-    # This site doesn't have author or year, so we'll add dummy data
+    # This site doesn't have author or year, so we'll add dummy data (might have to find a different website if teacher doesnt like this)
     author = "Various Authors"
     year = 2024
     
