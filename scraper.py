@@ -31,7 +31,7 @@ for book in books[:15]:  # Get first 15 books
     rating_map = {'One': 1, 'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5}
     rating = rating_map.get(rating_class, 0)
     
-    # This site doesn't have author or year, so we'll add dummy data (might have to find a different website if teacher doesnt like this)
+    # This site doesn't have author or year, so we'll add some made up sht (might have to find a different website if teacher doesnt like this)
     author = "Various Authors"
     year = 2024
     
@@ -50,9 +50,4 @@ print(f"Extracted {len(book_data)} books")
 df = pd.DataFrame(book_data)
 
 # Save to CSV
-df.to_csv('data/techreads_books.csv', index=False)
-print("Saved to data/techreads_books.csv")
-
-# Show what we got
-print("\n", df)
-print(f"\nScraped {len(df)} books successfully!")
+df.to_csv('data/Scraped_Data.csv', index=False)
