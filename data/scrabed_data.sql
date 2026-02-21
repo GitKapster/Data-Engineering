@@ -1,3 +1,6 @@
+--This is just used for importing, i think everyone has to bootup phpmyadmin to import this database
+--Scraper.py should be inserts the contents of scraped data into the database
+
 CREATE DATABASE IF NOT EXISTS scraped_data;
 USE scraped_data;
 
