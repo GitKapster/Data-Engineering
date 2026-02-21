@@ -54,6 +54,9 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor()
 
+# Insert placeholder author because books to scrape doesnt have authors and without this there is FK errors
+cursor.execute("INSERT IGNORE INTO Authors (AuthorID, AuthorName) VALUES (1, 'Various Authors')")
+
 # Clear old data so we dont get duplicates if run again
 cursor.execute("DELETE FROM Books")
 
