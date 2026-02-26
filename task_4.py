@@ -12,13 +12,12 @@ df.to_json("Scraped_Data.json", orient="records", indent=4) #Converted to .json
 
 #Insert JSON into MongoDB
 client = MongoClient("mongodb://localhost:27017/")
-db = client["scraped_data"] #Changed the name because it was different than our database name
+db = client["techreads_db"]
 collection = db["books"]
 
 with open("Scraped_Data.json") as f:
     data = json.load(f)
 
-collection.drop() #Added this so that we dont insert duplicates
 collection.insert_many(data)
 
 #MongoDB queries
