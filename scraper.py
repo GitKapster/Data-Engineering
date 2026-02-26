@@ -56,7 +56,7 @@ conn = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="techreads_db"
+    database="threads_db" #woops
 )
 cursor = conn.cursor()
 

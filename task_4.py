@@ -30,7 +30,7 @@ conn = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="scraped_data"
+    database="threads_db"
 )
 cursor = conn.cursor()
 
