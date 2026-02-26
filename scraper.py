@@ -56,7 +56,7 @@ conn = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="techreads_db"
+    database="scraped_data" #This had the wrong name as well changed it back to scraped data
 )
 cursor = conn.cursor()
 
