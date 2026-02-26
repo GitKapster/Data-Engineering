@@ -1,5 +1,5 @@
---This is just used for importing, i think everyone has to bootup phpmyadmin to import this database
---Scraper.py should be inserts the contents of scraped data into the database
+-- this is just used for importing, i think everyone has to bootup phpmyadmin to import this database
+-- Scraper.py should be inserts the contents of scraped data into the database
 
 CREATE DATABASE IF NOT EXISTS techreads_db;
 USE techreads_db;
