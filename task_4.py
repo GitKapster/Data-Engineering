@@ -7,15 +7,15 @@ import time
 import mysql.connector
 
 #Load CSV and convert to JSON
-df = pd.read_csv("data/Scraped_Data.csv") #From line 45 of scraper.py
-df.to_json("Scraped_Data.json", orient="records", indent=4) #Converted to .json
+df = pd.read_csv("data/techreads_books.csv") #has to match scraper.py
+df.to_json("techreads.json", orient="records", indent=4) #Converted to .json
 
 #Insert JSON into MongoDB
 client = MongoClient("mongodb://localhost:27017/")
 db = client["techreads_db"]
 collection = db["books"]
 
-with open("Scraped_Data.json") as f:
+with open("techreads.json") as f:
     data = json.load(f)
 
 collection.insert_many(data)

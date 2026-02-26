@@ -48,10 +48,10 @@ for book in books[:15]:
     })
 
 df = pd.DataFrame(book_data)
-df.to_csv('data/Scraped_Data.csv', index=False)
+df.to_csv('data/techreads_books.csv', index=False)
 
 # Connect to the database and insert the scraped data
-# Make sure XAMPP is running and scraped_data.sql has been imported first (everyone has to import sql file individually)
+# Make sure XAMPP is running and techreads_books.sql has been imported first (everyone has to import sql file individually)
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
