@@ -2,6 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import mysql.connector #this is what lets scraper insert the scraped books directly into the database make sure u install
+import json
+from pymongo import MongoClient
+import time
 
 # URL to scrape
 url = "http://books.toscrape.com/catalogue/category/books_1/index.html"
@@ -87,5 +90,103 @@ for _, row in df.iterrows():
     ))
 
 conn.commit()
+cursor.close()
+conn.close()
+
+# task 4 mongodb insertion and queries
+
+# Load CSV
+df = pd.read_csv("data/techreads_books.csv")
+
+json_file_path = "techreads_books.json"
+
+df.to_json(json_file_path, orient="records", indent=4)
+
+print("CSV successfully converted to JSON.")
+
+# Connect to MongoDB Atlas
+client = MongoClient("mongodb+srv://eringoonan:dbengineering@cluster0.9ib8exk.mongodb.net/?appName=Cluster0")
+
+db = client["techreads_db"]
+collection = db["books"]
+
+# Clear collection to avoid duplicates
+collection.delete_many({})
+
+# Load JSON file
+with open(json_file_path, "r", encoding="utf-8") as file:
+    json_data = json.load(file)
+
+# Insert into MongoDB
+start_time = time.time()
+collection.insert_many(json_data)
+end_time = time.time()
+
+print("Data inserted into MongoDB successfully.")
+print("Insertion time:", end_time - start_time, "seconds")
+
+# mongo db query testing section
+
+start = time.time()
+
+mongo_q1 = list(
+    collection
+    .find({}, {"_id": 0, "Title": 1, "Year": 1, "Price": 1})
+    .sort("Price", 1)
+)
+
+mongo_time_q1 = time.time() - start
+
+start = time.time()
+
+mongo_q2 = list(
+    collection
+    .find({}, {"_id": 0, "Title": 1, "Author": 1, "Rating": 1})
+    .sort("Rating", -1)
+)
+
+mongo_time_q2 = time.time() - start
+
+print("MongoDB Query 2 time:", mongo_time_q2)
+
+print("MongoDB Query 1 time:", mongo_time_q1)
+
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="techreads_db"
+)
+
+cursor = conn.cursor()
+
+# sql query testing section
+
+# Query 1: Title, Year, Price ordered by Price ASC
+start = time.time()
+cursor.execute("""
+    SELECT Title, Year, Price
+    FROM Books
+    ORDER BY Price ASC;
+""")
+query1_result = cursor.fetchall()
+mysql_time_q1 = time.time() - start
+
+
+# Query 2: Title, Author, Rating ordered by Rating DESC
+start = time.time()
+cursor.execute("""
+    SELECT Books.Title, Authors.AuthorName, Books.Rating
+    FROM Books
+    INNER JOIN Authors 
+        ON Books.AuthorID = Authors.AuthorID
+    ORDER BY Books.Rating DESC;
+""")
+query2_result = cursor.fetchall()
+mysql_time_q2 = time.time() - start
+
+print("MySQL Query 1 time:", mysql_time_q1)
+print("MySQL Query 2 time:", mysql_time_q2)
+
 cursor.close()
 conn.close()
